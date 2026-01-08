@@ -1,7 +1,8 @@
 #pragma once
-#include "land.h"
 #include <string>
 #include <sstream>
+
+class Land;
 
 enum class House {
     Stark, Greyjoy, Lannister, Tyrell, Baratheon, Martel
