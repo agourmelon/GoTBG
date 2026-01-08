@@ -14,12 +14,12 @@ Land_sptr make_land_ref(string name, int influence, int supply, StrongHold facil
 int main() {
     Map map;
     Land_sptr Winterfell = make_land_ref("Winterfell", 1, 1, StrongHold::Fortress);
-    Land_sptr MountCoatlin = make_land_ref("MountCoatlin", 0, 1, StrongHold::None);
-    Land_sptr CastleBlack = make_land_ref("CastleBlack", 1, 0, StrongHold::None);
+    Land_sptr MountCoatlin = make_land_ref("Mount Coatlin", 0, 1, StrongHold::None);
+    Land_sptr CastleBlack = make_land_ref("Castle Black", 1, 0, StrongHold::None);
     Land_sptr Karhold = make_land_ref("Karhold", 1, 0, StrongHold::None);
-    Land_sptr WhiteHarbor = make_land_ref("WhiteHarbor", 0, 0, StrongHold::Castle);
+    Land_sptr WhiteHarbor = make_land_ref("White Harbor", 0, 0, StrongHold::Castle);
     Land_sptr WidowsWatch = make_land_ref("Widow's Watch", 0, 1, StrongHold::None);
-    Land_sptr TheStonyShore = make_land_ref("TheStonyShore", 0, 1, StrongHold::None);
+    Land_sptr TheStonyShore = make_land_ref("The Stony Shore", 0, 1, StrongHold::None);
 
     map.add_land(MountCoatlin);
     map.add_land(Winterfell);
