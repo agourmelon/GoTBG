@@ -1,17 +1,18 @@
 #pragma once
 #include <map>
 #include <string>
+#include <memory>
 
 using namespace std;
 
 class Land;
 
 class Map {
-    map<string, Land*> lands;
+    map<string, shared_ptr<Land>> lands;
 
 public:
-    Map() {lands = map<string, Land*>();}
-    void add_land(const Land* land); 
-    void make_neighbors(Land* land1, Land* land2); 
+    Map() {lands = map<string, shared_ptr<Land>>();}
+    void add_land(const shared_ptr<Land> land); 
+    void make_neighbors(shared_ptr<Land> land1, shared_ptr<Land> land2); 
     string print_map();
 };
