@@ -13,7 +13,6 @@
     while (!valid_response) {
         std::cout << "Invalid destination" << std::endl;
         std::cout << "Possible destinations: " << army.get_position()->print_neighbors() << std::endl;
-        std::string destination_name;
         std::cin >> destination_name;
         valid_response = army.get_position()->get_neighbors_name().contains(destination_name);
     }
