@@ -5,19 +5,19 @@
 #include <iostream>
 
  void move(Army& army, const Map& map) {
-    std::cout << "Army" << army.get_house() << " at " << army.print_position() << " is moving " << std::endl;
+    std::cout <<  army.get_house() << " army at " << army.print_position() << " is moving " << std::endl;
     std::cout << "Possible destinations: " << army.get_position()->print_neighbors() << std::endl;
     std::string destination_name;
-    std::cin >> destination_name;
+    std::getline(std::cin, destination_name);
     bool valid_response = army.get_position()->get_neighbors_name().contains(destination_name);
     while (!valid_response) {
         std::cout << "Invalid destination" << std::endl;
         std::cout << "Possible destinations: " << army.get_position()->print_neighbors() << std::endl;
-        std::cin >> destination_name;
+        std::getline(std::cin, destination_name);
         valid_response = army.get_position()->get_neighbors_name().contains(destination_name);
     }
     army.set_position(map.get_land(destination_name));
-    std::cout << "Army" << army.get_house() << " moved to " << army.print_position() << std::endl;
+    std::cout  << army.get_house() << " army moved to " << army.print_position() << std::endl;
  }
 
 
