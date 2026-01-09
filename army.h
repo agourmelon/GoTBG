@@ -1,8 +1,8 @@
 #pragma once
+#include "land.h"
 #include <string>
 #include <sstream>
 
-class Land;
 
 enum class House {
     Stark, Greyjoy, Lannister, Tyrell, Baratheon, Martel
@@ -25,26 +25,26 @@ class Army {
     House house;
     int soldiers;
     int knights;
-    Land& position;
+    Land_sptr position;
 public:
-    Army(House house, int soldiers, int knights, Land& position):
+    Army(House house, int soldiers, int knights, Land_sptr position):
         house{house}, soldiers{soldiers}, knights{knights}, position{position} {}
     
-    std::string get_house() const {return print_house(this->house);}
+    std::string get_house() const {return print_house(house);}
 
-    int get_soldiers_number() const {return this->soldiers;}
+    int get_soldiers_number() const {return soldiers;}
 
-    int get_knights_number() const {return this->knights;}
+    int get_knights_number() const {return knights;}
 
-    Land& get_position() const {
-        return this->position;
+    Land_sptr get_position() const {
+        return position;
     };
 
-    void set_position(Land& new_position) {
-        this->position = new_position; 
+    void set_position(Land_sptr new_position) {
+        swap(position, new_position); 
     }
 
-    std::string print_position() const {return this->position.get_name();}
+    std::string print_position() const {return position->get_name();}
 
     std::string print_status() const {
         std::stringstream ss;

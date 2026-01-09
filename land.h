@@ -28,3 +28,9 @@ public:
     void share_border_with(weak_ptr<Land> land); 
     set<string> get_neighbors_name() const; 
 };
+
+using Land_sptr = shared_ptr<Land>;
+
+Land_sptr make_land_ref(string name, int influence, int supply, StrongHold facility) {
+    return make_shared<Land>(name, influence, supply, facility);
+}

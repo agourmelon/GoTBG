@@ -7,9 +7,8 @@
 
 
 int main() {
-
-    Land Winterfell("Winterfell", 1, 0, StrongHold::Fortress);
-    Land MountCoatlin("MountCoatlin", 0, 1, StrongHold::None);
+    Land_sptr Winterfell = make_land_ref("Winterfell", 1, 0, StrongHold::Fortress);
+    Land_sptr MountCoatlin = make_land_ref("Mount Coatlin", 0, 1, StrongHold::None);
 
     Army EdvardTroops(House::Stark, 1, 1, Winterfell);
 

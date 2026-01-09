@@ -1,8 +1,6 @@
 #include "land.h"
 #include <memory>
 
-using namespace std;
-
 
 bool land_weak_ptr_compare::operator()(const weak_ptr<Land>& land1, const weak_ptr<Land>& land2) const {
     return land1.lock()->get_name() < land2.lock()->get_name();
