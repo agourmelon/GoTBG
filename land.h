@@ -2,6 +2,9 @@
 #include <string>
 #include <set>
 #include <memory>
+#include <sstream>
+#include <algorithm>
+#include <iterator>
 
 using namespace std;
 
@@ -26,11 +29,17 @@ public:
 
     std::string get_name() const {return this->name;}
     void share_border_with(weak_ptr<Land> land); 
-    set<string> get_neighbors_name() const; 
+    set<string> get_neighbors_name() const;
+    string print_neighbors() const {
+        ostringstream ss;
+        auto neighbors_names = get_neighbors_name();
+        copy(neighbors_names.begin(), neighbors_names.end(), ostream_iterator<string>(ss, ", "));
+        return ss.str();
+    }
 };
 
 using Land_sptr = shared_ptr<Land>;
 
-Land_sptr make_land_ref(string name, int influence, int supply, StrongHold facility) {
+inline Land_sptr make_land_ref(string name, int influence, int supply, StrongHold facility) {
     return make_shared<Land>(name, influence, supply, facility);
 }
