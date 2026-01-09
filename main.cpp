@@ -2,23 +2,29 @@
 #include "land.h"
 #include "stronghold.h"
 #include "map.h"
+#include "order.h"
 #include <iostream>
 
- void move(Army& army, const Map& map) {
-    std::cout <<  army.get_house() << " army at " << army.print_position() << " is moving " << std::endl;
-    std::cout << "Possible destinations: " << army.get_position()->print_neighbors() << std::endl;
+MoveOrder make_move_order(shared_ptr<Army> army, const Map& map) {
+    std::cout <<  army->get_house() << " army at " << army->print_position() << " is moving " << std::endl;
+    std::cout << "Possible destinations: " << army->get_position()->print_neighbors() << std::endl;
     std::string destination_name;
     std::getline(std::cin, destination_name);
-    bool valid_response = army.get_position()->get_neighbors_name().contains(destination_name);
+    bool valid_response = army->get_position()->get_neighbors_name().contains(destination_name);
     while (!valid_response) {
         std::cout << "Invalid destination" << std::endl;
-        std::cout << "Possible destinations: " << army.get_position()->print_neighbors() << std::endl;
+        std::cout << "Possible destinations: " << army->get_position()->print_neighbors() << std::endl;
         std::getline(std::cin, destination_name);
-        valid_response = army.get_position()->get_neighbors_name().contains(destination_name);
+        valid_response = army->get_position()->get_neighbors_name().contains(destination_name);
     }
-    army.set_position(map.get_land(destination_name));
-    std::cout  << army.get_house() << " army moved to " << army.print_position() << std::endl;
- }
+    Land_sptr destination = map.get_land(destination_name);
+    MoveOrder order(army, destination);
+    std::cout << "Move order to " 
+    << destination->get_name() << " has been sent to the " 
+    << army->get_house() << " army at" << army->print_position() 
+    << std::endl;
+    return order;
+}
 
 
 int main() {
@@ -48,13 +54,14 @@ int main() {
     map.make_neighbors(Karhold, CastleBlack);
     map.make_neighbors(WhiteHarbor, MountCoatlin);
 
-    Army EdvardTroops(House::Stark, 1, 1, Winterfell);
+    shared_ptr<Army> EdvardTroops = make_shared<Army>(House::Stark, 1, 1, Winterfell);
 
-    std::cout << EdvardTroops.print_status() << std::endl;
+    std::cout << EdvardTroops->print_status() << std::endl;
 
-    move(EdvardTroops, map);
+    MoveOrder move_order = make_move_order(EdvardTroops, map);
+    move_order.execute();
 
-    std::cout << EdvardTroops.print_status() << std::endl;
+    std::cout << EdvardTroops->print_status() << std::endl;
 
     return 0;
 }

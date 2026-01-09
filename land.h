@@ -28,6 +28,7 @@ public:
         name{name}, influence{influence}, supply{supply}, facility{facility} {}
 
     std::string get_name() const {return this->name;}
+    bool is_neighbor(const shared_ptr<Land> land) const {return this->neighbors.contains(land);}
     void share_border_with(weak_ptr<Land> land); 
     set<string> get_neighbors_name() const;
     string print_neighbors() const {

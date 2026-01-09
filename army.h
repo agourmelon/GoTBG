@@ -8,7 +8,7 @@ enum class House {
     Stark, Greyjoy, Lannister, Tyrell, Baratheon, Martel
 };
 
-std::string print_house(House house) {
+inline std::string print_house(House house) {
     switch (house)
     {
     case House::Stark: return "Stark";
