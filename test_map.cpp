@@ -4,12 +4,6 @@
 #include <iostream>
 #include <memory>
 
-using namespace std;
-using Land_sptr = shared_ptr<Land>;
-
-Land_sptr make_land_ref(string name, int influence, int supply, StrongHold facility) {
-    return make_shared<Land>(name, influence, supply, facility);
-}
 
 int main() {
     Map map;
