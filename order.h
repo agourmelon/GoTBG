@@ -14,4 +14,6 @@ public:
     MoveOrder(shared_ptr<Army> army, const shared_ptr<Land> destination);
     void execute();
     string print() const;
+    const string& get_destination() const {return destination->get_name();};
+    shared_ptr<Army> get_army() const {return army.lock();};
 };

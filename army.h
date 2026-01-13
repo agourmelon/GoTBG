@@ -21,20 +21,20 @@ inline std::string print_house(House house) {
     }
 }
 
-class Army {
+class Army : public enable_shared_from_this<Army> {
     House house;
-    int soldiers;
-    int knights;
+    unsigned int soldiers;
+    unsigned int knights;
     Land_sptr position;
 public:
-    Army(House house, int soldiers, int knights, Land_sptr position):
+    Army(House house, unsigned int soldiers, unsigned int knights, Land_sptr position):
         house{house}, soldiers{soldiers}, knights{knights}, position{position} {}
     
     std::string get_house() const {return print_house(house);}
 
-    int get_soldiers_number() const {return soldiers;}
+    unsigned int get_soldiers_number() const {return soldiers;}
 
-    int get_knights_number() const {return knights;}
+    unsigned int get_knights_number() const {return knights;}
 
     Land_sptr get_position() const {
         return position;
@@ -58,5 +58,17 @@ public:
             << this->get_knights_number() 
             << " knights";
         return ss.str();
+    }
+
+    unsigned int get_strength() const {
+        return soldiers + knights * 2;
+    }
+
+    void add_soldiers(unsigned int soldiers) {
+        this->soldiers += soldiers;
+    }
+
+    void add_knights(unsigned int knights) {
+        this->knights += knights;
     }
 };

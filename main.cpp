@@ -21,7 +21,7 @@ MoveOrder make_move_order(shared_ptr<Army> army, const Map& map) {
     MoveOrder order(army, destination);
     std::cout << "Move order to " 
     << destination->get_name() << " has been sent to the " 
-    << army->get_house() << " army at" << army->print_position() 
+    << army->get_house() << " army at " << army->print_position() 
     << std::endl;
     return order;
 }
@@ -37,6 +37,44 @@ Map build_map(initializer_list<Land>&& lands, initializer_list<pair<string, stri
     }
     cout << map.print_map() << endl;
     return map;
+}
+
+
+shared_ptr<Army> build_army(House house, unsigned int soldiers, unsigned int knights, string&& position, Map& map) {
+    shared_ptr<Army> army = make_shared<Army>(house, soldiers, knights, map.get_land(move(position)));
+    army->get_position()->set_army(army);
+    return army;
+}
+
+
+void merge_armies(shared_ptr<Army> incoming_army, shared_ptr<Army> inplace_army) {
+    cout << "Merging " << incoming_army->get_house() << " armies at " << incoming_army->print_position() << endl;
+    incoming_army->add_soldiers(inplace_army->get_soldiers_number());
+    incoming_army->add_knights(inplace_army->get_knights_number());
+    //TODO: delete inplace_army.get();
+    cout << incoming_army->print_status() << endl;
+    incoming_army->get_position()->set_army(incoming_army);
+}
+
+void initiate_battle(shared_ptr<Army> incoming_army, shared_ptr<Army> inplace_army) {
+    shared_ptr<Army>& winning_army = incoming_army->get_strength() > inplace_army->get_strength() ? 
+        incoming_army : inplace_army;
+    shared_ptr<Army>& losing_army = incoming_army->get_strength() > inplace_army->get_strength() ?
+        inplace_army : incoming_army;
+    delete losing_army.get();
+    winning_army->get_position()->set_army(winning_army);
+}
+
+
+void execute_move_order(MoveOrder& move_order, Map map){
+    move_order.execute();
+    if (map.get_land(move_order.get_destination())->has_army()) {
+        shared_ptr<Army> inplace_army = map.get_land(move_order.get_destination())->get_army();
+        shared_ptr<Army> incoming_army = move_order.get_army();
+        inplace_army->get_house() == incoming_army->get_house() ? 
+            merge_armies(incoming_army, inplace_army)
+            : initiate_battle(incoming_army, inplace_army);
+    }
 }
 
 
@@ -64,14 +102,18 @@ int main() {
     );
 
 
-    shared_ptr<Army> EdvardTroops = make_shared<Army>(House::Stark, 1, 1, map.get_land("Winterfell"));
+    shared_ptr<Army> EdvardStarkTroops = build_army(House::Stark, 2, 1, "Winterfell", map);
+    shared_ptr<Army> JonSnowTroops = build_army(House::Stark, 1, 1, "Mount Coatlin", map);
+    
 
-    std::cout << EdvardTroops->print_status() << std::endl;
+    std::cout << EdvardStarkTroops->print_status() << std::endl;
+    std::cout << JonSnowTroops->print_status() << std::endl;
 
-    MoveOrder move_order = make_move_order(EdvardTroops, map);
-    move_order.execute();
+    MoveOrder move_order = make_move_order(EdvardStarkTroops, map);
+    execute_move_order(move_order, map);
 
-    std::cout << EdvardTroops->print_status() << std::endl;
+    std::cout << EdvardStarkTroops->print_status() << std::endl;
+    std::cout << JonSnowTroops->print_status() << std::endl;
 
     return 0;
 }
