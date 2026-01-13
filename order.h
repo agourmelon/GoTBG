@@ -1,5 +1,6 @@
 #pragma once
 #include <memory>
+#include <string>
 
 using namespace std;
 
@@ -12,4 +13,5 @@ class MoveOrder{
 public:
     MoveOrder(shared_ptr<Army> army, const shared_ptr<Land> destination);
     void execute();
+    string print() const;
 };
