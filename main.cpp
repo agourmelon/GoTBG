@@ -27,34 +27,44 @@ MoveOrder make_move_order(shared_ptr<Army> army, const Map& map) {
 }
 
 
-int main() {
+Map build_map(initializer_list<Land>&& lands, initializer_list<pair<string, string>>&& borders){
     Map map;
-    Land_sptr Winterfell = make_land_ref("Winterfell", 1, 1, StrongHold::Fortress);
-    Land_sptr MountCoatlin = make_land_ref("Mount Coatlin", 0, 1, StrongHold::None);
-    Land_sptr CastleBlack = make_land_ref("Castle Black", 1, 0, StrongHold::None);
-    Land_sptr Karhold = make_land_ref("Karhold", 1, 0, StrongHold::None);
-    Land_sptr WhiteHarbor = make_land_ref("White Harbor", 0, 0, StrongHold::Castle);
-    Land_sptr WidowsWatch = make_land_ref("Widow's Watch", 0, 1, StrongHold::None);
-    Land_sptr TheStonyShore = make_land_ref("The Stony Shore", 0, 1, StrongHold::None);
+    for (auto&& land: lands) {
+        map.add_land(make_shared<Land>(move(land)));
+    }
+    for (auto&& [land1, land2]: borders) {
+        map.make_neighbors(map.get_land(move(land1)), map.get_land(move(land2)));
+    }
+    cout << map.print_map() << endl;
+    return map;
+}
 
-    map.add_land(MountCoatlin);
-    map.add_land(Winterfell);
-    map.add_land(CastleBlack);
-    map.add_land(Karhold);
-    map.add_land(WhiteHarbor);
-    map.add_land(WidowsWatch);
-    map.add_land(TheStonyShore);
 
-    map.make_neighbors(Winterfell, MountCoatlin);
-    map.make_neighbors(Winterfell, CastleBlack);
-    map.make_neighbors(Winterfell, Karhold);
-    map.make_neighbors(Winterfell, WhiteHarbor);
-    map.make_neighbors(Winterfell, TheStonyShore);
-    map.make_neighbors(WhiteHarbor, WidowsWatch);
-    map.make_neighbors(Karhold, CastleBlack);
-    map.make_neighbors(WhiteHarbor, MountCoatlin);
+int main() {
+    Map map = build_map(
+        {
+            {"Winterfell", 1, 1, StrongHold::Fortress}, 
+            {"Mount Coatlin", 0, 1, StrongHold::None}, 
+            {"Castle Black", 1, 0, StrongHold::None}, 
+            {"Karhold", 1, 0, StrongHold::None}, 
+            {"White Harbor", 0, 0, StrongHold::Castle}, 
+            {"Widow's Watch", 0, 1, StrongHold::None}, 
+            {"The Stony Shore", 0, 1, StrongHold::None}
+        },
+        {
+            {"Winterfell", "Mount Coatlin"},
+            {"Winterfell", "Castle Black"},
+            {"Winterfell", "Karhold"},
+            {"Winterfell", "White Harbor"},
+            {"Winterfell", "The Stony Shore"},
+            {"White Harbor", "Widow's Watch"},
+            {"Karhold", "Castle Black"},
+            {"White Harbor", "Mount Coatlin"}
+        }
+    );
 
-    shared_ptr<Army> EdvardTroops = make_shared<Army>(House::Stark, 1, 1, Winterfell);
+
+    shared_ptr<Army> EdvardTroops = make_shared<Army>(House::Stark, 1, 1, map.get_land("Winterfell"));
 
     std::cout << EdvardTroops->print_status() << std::endl;
 
