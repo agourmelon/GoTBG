@@ -38,7 +38,7 @@ public:
         }
     }
 
-    std::string print() {
+    const std::string print() const {
         std::stringstream ss;
         for (auto& land_name: map.get_lands_names()) {
             ss << land_name;
@@ -50,4 +50,6 @@ public:
         }
         return ss.str();
     }
+
+    const std::string print_map() const { return map.print(); }
 };

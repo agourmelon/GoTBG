@@ -16,8 +16,8 @@ public:
     Map() {lands = map<const string, shared_ptr<Land>>();}
     void add_land(const shared_ptr<Land> land); 
     void make_neighbors(shared_ptr<Land> land1, shared_ptr<Land> land2); 
-    shared_ptr<Land> get_land(const string& name) const {return lands.at(name);}
-    string print();
+    const shared_ptr<Land> get_land(const string& name) const {return lands.at(name);}
+    const string print() const;
     const vector<string> get_lands_names() const {
         vector<string> names;
         for_each(

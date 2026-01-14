@@ -21,9 +21,11 @@ public:
 
     void add_knights(int number) {knights += number;}
 
+    int get_strength() const {return soldiers + knights;}
+
     std::string print_status() const {
         std::stringstream ss;
-        ss << this->get_house() << " with " << this->get_soldiers_number() 
+        ss << this->get_house() << " army with " << this->get_soldiers_number() 
             << " soldiers and " << this->get_knights_number() << " knights";
         return ss.str();
     }

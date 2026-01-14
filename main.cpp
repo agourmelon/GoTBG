@@ -8,13 +8,12 @@
 
 const Map build_map(initializer_list<Land>&& lands, initializer_list<pair<string, string>>&& borders){
     Map map;
-    for (auto&& land: lands) {
+    for (auto&& land: move(lands)) {
         map.add_land(make_shared<Land>(move(land)));
     }
-    for (auto&& [land1, land2]: borders) {
+    for (auto&& [land1, land2]: move(borders)) {
         map.make_neighbors(map.get_land(move(land1)), map.get_land(move(land2)));
     }
-    cout << map.print() << endl;
     return map;
 }
 
@@ -44,6 +43,8 @@ int main() {
 
 
     Board board(move(map));
+    cout << board.print_map() << endl;
+
     board.place_units("Winterfell", House::Stark, 1, 0);
     board.place_units("Winterfell", House::Stark, 0, 2);
     board.place_units("Mount Coatlin", House::Greyjoy, 1, 1);

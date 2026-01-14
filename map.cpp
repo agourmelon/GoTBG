@@ -11,7 +11,7 @@ void Map::make_neighbors(shared_ptr<Land> land1, shared_ptr<Land> land2){
     land2->share_border_with(land1);
 }
 
-string Map::print(){
+const string Map::print() const {
     stringstream ss;
     for (auto& [name, land]: this->lands) {
         ss << name << " has neighbors: " << endl;
