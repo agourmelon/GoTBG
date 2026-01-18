@@ -28,12 +28,12 @@ public:
         auto army = armies.find(position);
         if (army == armies.end()) {
             armies.insert({position, make_unique<Army>(house, number_of_soldiers, number_of_knights)});
-            cout << "New " << print_house(house) << " army was formed at " << position << " with " 
+            cout << "New " << house::print(house) << " army was formed at " << position << " with " 
             << number_of_soldiers << " soldiers and " << number_of_knights << " knights" << endl;
         } else {
             army->second->add_soldiers(number_of_soldiers);
             army->second->add_knights(number_of_knights);
-            cout << "House " << print_house(house) << " has recruted " << number_of_soldiers
+            cout << "House " << house::print(house) << " has recruted " << number_of_soldiers
             << " soldiers and " << number_of_knights << " knights at " << position << endl;
         }
     }
@@ -52,4 +52,26 @@ public:
     }
 
     const std::string print_map() const { return map.print(); }
+
+    void move_units(const string& from, const string& to, int number_of_soldiers, int number_of_knights) {
+        check_position(map, from);
+        check_position(map, to);
+        auto origin_army = armies.find(from);
+        if (origin_army == armies.end()) {
+            cout << "[ERROR]: No army found at " << from << endl;
+            return;
+        }
+        ArmyUptr moving_army = make_unique<Army>(
+            origin_army->second->withdraw_units(number_of_soldiers, number_of_knights)
+        );
+        cout << number_of_soldiers << " soldiers and " << number_of_knights << " knights of house "
+        << origin_army->second->print_house() <<" were moved from " << from << " to " << to << endl;
+        auto destination_army = armies.find(to);
+        if (destination_army == armies.end()) {
+            armies.insert({to, std::move(moving_army)});
+        } else {
+            ArmyUptr resulting_army = make_unique<Army>(face_off(*moving_army, *destination_army->second));
+            armies.at(to) = std::move(resulting_army);
+        }
+    }
 };
