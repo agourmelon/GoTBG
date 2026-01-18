@@ -27,11 +27,11 @@ public:
     Land(std::string name, int influence, int supply, StrongHold facility): 
         name{name}, influence{influence}, supply{supply}, facility{facility} {}
 
-    std::string get_name() const {return this->name;}
+    const std::string get_name() const {return this->name;}
     bool is_neighbor(const shared_ptr<Land> land) const {return this->neighbors.contains(land);}
     void share_border_with(weak_ptr<Land> land); 
-    set<string> get_neighbors_name() const;
-    string print_neighbors() const {
+    const set<string> get_neighbors_name() const;
+    const string print_neighbors() const {
         ostringstream ss;
         auto neighbors_names = get_neighbors_name();
         copy(neighbors_names.begin(), neighbors_names.end(), ostream_iterator<string>(ss, ", "));
